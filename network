@@ -1,0 +1,20 @@
+from scapy.all import sniff
+from scapy.layers.inet import IP, TCP, UDP
+
+def packet_callback(packet):
+    if IP in packet:
+        src_ip = packet[IP].src
+        dst_ip = packet[IP].dst
+
+        protocol = "OTHER"
+        if TCP in packet:
+            protocol = "TCP"
+        elif UDP in packet:
+            protocol = "UDP"
+
+        print(f"Source IP: {src_ip} --> Destination IP: {dst_ip} | Protocol: {protocol}")
+
+# Capture 10 packets (safe & beginner-friendly)
+print("Starting packet capture...")
+sniff(count=10, prn=packet_callback)
+print("Packet capture finished.")
